@@ -31,7 +31,6 @@ const CustomSelect = function (e) {
          createSelectUl.appendChild(createOptgroupItem);
          createSelectLi(optgroup[p].querySelectorAll('option'));
       }
-
    } else createSelectLi(selectOption);
 
    function createSelectLi(e) {
