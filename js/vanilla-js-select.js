@@ -2,6 +2,7 @@ const CustomSelect = function (e) {
 
    let mainInitId = e.elem ? document.getElementById(e.elem) : e.elem,
       optgroup = mainInitId.querySelectorAll('optgroup'),
+      // s = "boolean" == typeof e.bubbles,
       selectOption = mainInitId.options,
       dataIndexCount = 0,
       selectTitleClass = 'select-title',
@@ -59,6 +60,9 @@ const CustomSelect = function (e) {
          if ('LI' === target.tagName) {
             createSelectContainer.querySelector(`.${selectTitleClass}`).innerText = target.innerText;
             mainInitId.options.selectedIndex = target.getAttribute('data-index');
+
+            // const n = s ? new CustomEvent("change", {bubbles: !0}) : new CustomEvent("change");
+            // mainInitId.dispatchEvent(n);
 
             for (let a = 0; a < selectOption.length; a++) {
                createSelectUl.querySelectorAll('li')[a].classList.remove(selectedClass);
