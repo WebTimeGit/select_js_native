@@ -25,7 +25,6 @@ const CustomSelect = function (e) {
    createSelectUl.className = "select-list";
 
    if (optgroup.length > 0) {
-
       for (let p = 0; p < optgroup.length; p++) {
          const createOptgroupItem = document.createElement("div");
          createOptgroupItem.classList.add("select-optgroup");
@@ -37,7 +36,6 @@ const CustomSelect = function (e) {
    } else createSelectLi(selectOption);
 
    function createSelectLi(e) {
-
       for (let t = 0; t < e.length; t++) {
          const createSelectLi = document.createElement("li");
          createSelectLi.innerText = e[t].textContent;
@@ -49,7 +47,6 @@ const CustomSelect = function (e) {
             createSelectLi.classList.add(selected);
             createSelectBtn.textContent = e[t].textContent
          }
-
       }
    }
 
