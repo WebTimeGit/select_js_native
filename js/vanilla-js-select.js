@@ -1,5 +1,5 @@
 const CustomSelect = function (e) {
-
+//as
    let mainInitId = e.elem ? document.getElementById(e.elem) : e.elem,
       optgroup = mainInitId.querySelectorAll('optgroup'),
       // s = "boolean" == typeof e.bubbles,
