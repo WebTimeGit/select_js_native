@@ -12,30 +12,7 @@ const CustomSelect = function (e) {
       createSelectUlClass = 'select-list',
       createOptgroupItemClass = 'select-optgroup',
       createSelectBtnActive = 'active',
-      selectListOpenClass = 'is-open',
-      SelectArray = [];
-
-   // update local storage function
-   const updateLocalStorage = () => {
-      localStorage.setItem('select', JSON.stringify(SelectArray));
-   }
-
-   console.log(selectedIndex);
-
-   // create our object
-   function eventPush() {
-      let selectObject = {
-         selected: selectedIndex
-      };
-      SelectArray.push(selectObject);
-      updateLocalStorage();
-   }
-
-   if (!localStorage.SelectArray) {
-      SelectArray = [];
-   } else {
-      SelectArray = JSON.parse(localStorage.getItem('select'));
-   }
+      selectListOpenClass = 'is-open';
 
    const createSelectContainer = document.createElement('div');
    createSelectContainer.className = createSelectContainerClass;
@@ -77,20 +54,19 @@ const CustomSelect = function (e) {
          createSelectLi.innerText = e[t].textContent;
          createSelectLi.setAttribute('data-value', e[t].value);
          createSelectLi.setAttribute('data-index', `${dataIndexCount++}`);
+         createSelectUl.appendChild(createSelectLi);
+
+         if (selectedIndex.textContent === e[t].textContent) {
+            createSelectLi.classList.add(selectedClass);
+            createSelectBtn.textContent = e[t].textContent;
+         }
 
          if (selectOption[dataImgCount++].getAttribute('data-srcImg')) {
             let srcImgIndex = e[t].getAttribute('data-srcImg');
             const createSelectImg = document.createElement('img');
             createSelectImg.classList.add('select_img', 'lazy');
-            createSelectImg.setAttribute('src', `${srcImgIndex}`);
+            createSelectImg.setAttribute('src', srcImgIndex);
             createSelectLi.appendChild(createSelectImg);
-         }
-
-         createSelectUl.appendChild(createSelectLi);
-
-         if (selectedIndex.textContent === e[t].textContent) {
-            createSelectLi.classList.add(selectedClass);
-            createSelectBtn.innerHTML = e[t].textContent;
          }
       }
    }
@@ -113,7 +89,6 @@ const CustomSelect = function (e) {
             target.classList.add(selectedClass);
          }
       }
-      eventPush();
    });
 
    function assemblyApp() {
