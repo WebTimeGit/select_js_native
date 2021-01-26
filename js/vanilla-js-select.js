@@ -14,18 +14,22 @@ const CustomSelect = function (e) {
       createSelectBtnActive = 'active',
       selectListOpenClass = 'is-open';
 
+   if (localStorage.getItem('selected')) {
+      mainInitId.selectedIndex = localStorage.getItem('selected');
+   }
+
    const createSelectContainer = document.createElement('div');
    createSelectContainer.className = createSelectContainerClass;
    if (mainInitId.id) createSelectContainer.id = `custom-${mainInitId.id}`;
 
-   const createSelectBtn = document.createElement('button');
+   let createSelectBtn = document.createElement('button');
    createSelectBtn.className = selectTitleClass;
    createSelectBtn.textContent = selectOption[0].textContent;
 
    const createSelectUl = document.createElement("ul");
    createSelectUl.className = createSelectUlClass;
 
-   createSelectBtn.addEventListener('mouseup', function () {
+   createSelectBtn.addEventListener('click', function () {
       createSelectUl.classList.toggle(selectListOpenClass);
       createSelectBtn.classList.toggle(createSelectBtnActive);
    });
@@ -51,7 +55,8 @@ const CustomSelect = function (e) {
    function createSelectLi(e) {
       for (let t = 0; t < e.length; t++) {
          const createSelectLi = document.createElement('li');
-         createSelectLi.innerText = e[t].textContent;
+         createSelectLi.innerText = e[t].innerHTML;
+
          createSelectLi.setAttribute('data-value', e[t].value);
          createSelectLi.setAttribute('data-index', `${dataIndexCount++}`);
          createSelectUl.appendChild(createSelectLi);
@@ -79,7 +84,6 @@ const CustomSelect = function (e) {
 
    createSelectContainer.addEventListener('click', e => {
       const target = e.target;
-
       if ('LI' === target.tagName) {
          createSelectContainer.querySelector(`.${selectTitleClass}`).innerHTML = target.innerHTML;
          mainInitId.options.selectedIndex = target.getAttribute('data-index');
@@ -88,8 +92,17 @@ const CustomSelect = function (e) {
             createSelectUl.querySelectorAll('li')[a].classList.remove(selectedClass);
             target.classList.add(selectedClass);
          }
+
+         localStorage.setItem('btn', target.innerHTML);
+         localStorage.setItem('selected', selectOption[mainInitId.selectedIndex].value);
+
+         console.log('выбран элемент ' + localStorage.getItem('selected'));
       }
    });
+
+   if(localStorage.getItem('btn')) {
+      createSelectBtn.innerHTML = localStorage.getItem('btn');
+   }
 
    function assemblyApp() {
       createSelectContainer.appendChild(createSelectBtn);
