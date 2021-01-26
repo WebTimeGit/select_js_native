@@ -6,6 +6,7 @@ const CustomSelect = function (e) {
       selectedIndex = selectOption[mainInitId.selectedIndex],
       dataIndexCount = 0,
       dataImgCount = 0,
+      liItemStorage,
       selectTitleClass = 'select-title',
       selectedClass = 'is-selected',
       createSelectContainerClass = 'custom-select',
@@ -93,6 +94,9 @@ const CustomSelect = function (e) {
             target.classList.add(selectedClass);
          }
 
+         liItemStorage = target.getAttribute('data-index');
+
+         localStorage.setItem('selectedList', liItemStorage);
          localStorage.setItem('btn', target.innerHTML);
          localStorage.setItem('selected', selectOption[mainInitId.selectedIndex].value);
 
@@ -100,16 +104,19 @@ const CustomSelect = function (e) {
       }
    });
 
+   if (localStorage.getItem('selectedList')) {
+      for (let b = 0; b < selectOption.length; b++) {
+         createSelectUl.querySelectorAll('li')[b].classList.remove(selectedClass);
+      }
+      createSelectUl.querySelectorAll('li')[localStorage.getItem('selectedList')].classList.add(selectedClass)
+   }
+
    if (localStorage.getItem('btn')) {
       createSelectBtn.innerHTML = localStorage.getItem('btn');
    }
 
-   function assemblyApp() {
-      createSelectContainer.appendChild(createSelectBtn);
-      createSelectContainer.appendChild(createSelectUl);
-      mainInitId.parentNode.insertBefore(createSelectContainer, mainInitId);
-      mainInitId.style.display = 'none';
-   }
-
-   return assemblyApp();
+   createSelectContainer.appendChild(createSelectBtn);
+   createSelectContainer.appendChild(createSelectUl);
+   mainInitId.parentNode.insertBefore(createSelectContainer, mainInitId);
+   mainInitId.style.display = 'none';
 };
