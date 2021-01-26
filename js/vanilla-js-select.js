@@ -100,7 +100,7 @@ const CustomSelect = function (e) {
       }
    });
 
-   if(localStorage.getItem('btn')) {
+   if (localStorage.getItem('btn')) {
       createSelectBtn.innerHTML = localStorage.getItem('btn');
    }
 
