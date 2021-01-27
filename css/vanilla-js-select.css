@@ -87,7 +87,7 @@
 
 }
 
-.select_list li.is_selected {
+.select_list li.selected {
     background: #8E8E8E;
 }
 
