@@ -8,6 +8,7 @@ const CustomSelect = function (e) {
       dataImgCount = 0,
       createSelectLi,
       createSelectImg,
+      prefixContainer = 'custom',
       titleClass = 'select_title',
       selectedClass = 'selected',
       selectContainerClass = 'custom_select',
@@ -24,7 +25,7 @@ const CustomSelect = function (e) {
 
    const createSelectContainer = document.createElement('div');
    createSelectContainer.className = selectContainerClass;
-   if (mainInitId.id) createSelectContainer.id = `custom-${mainInitId.id}`;
+   if (mainInitId.id) createSelectContainer.id = `${prefixContainer}-${mainInitId.id}`;
 
    let createSelectBtn = document.createElement('button');
    let btnSpan = document.createElement('span');
@@ -32,21 +33,14 @@ const CustomSelect = function (e) {
    createSelectBtn.className = titleClass;
    btnSpan.textContent = options[0].textContent;
 
+   if (selectedIndex.getAttribute('data-srcImg')) {
+      let selectedImg = document.createElement('img');
+      selectedImg.setAttribute('src', `${selectedIndex.getAttribute('data-srcImg')}`);
+      createSelectBtn.appendChild(selectedImg);
+   }
+
    const createSelectUl = document.createElement("ul");
    createSelectUl.className = selectUlClass;
-
-   createSelectBtn.addEventListener('click', function () {
-      createSelectUl.classList.toggle(ulOpenClass);
-      createSelectBtn.classList.toggle(titleClassActive);
-   });
-
-   document.addEventListener('mouseup', function (e) {
-      let isClickInside = createSelectBtn.contains(e.target);
-      if (!isClickInside && !e.target.classList.contains(optGroupClass)) {
-         createSelectUl.classList.remove(ulOpenClass);
-         createSelectBtn.classList.remove(titleClassActive);
-      }
-   })
 
    if (optGroup.length > 0) {
       for (let p = 0; p < optGroup.length; p++) {
@@ -63,7 +57,7 @@ const CustomSelect = function (e) {
          createSelectLi = document.createElement('li');
          let liSpan = document.createElement('span');
          createSelectLi.appendChild(liSpan)
-         liSpan.innerText = e[t].innerHTML;
+         liSpan.textContent = e[t].textContent;
 
          createSelectLi.setAttribute('data-value', e[t].value);
          createSelectLi.setAttribute('data-index', `${dataIndexCount++}`);
@@ -75,42 +69,47 @@ const CustomSelect = function (e) {
          }
 
          if (options[dataImgCount++].getAttribute('data-srcImg')) {
-            let srcImgIndex = e[t].getAttribute('data-srcImg');
+            let srcImg = e[t].getAttribute('data-srcImg');
             createSelectImg = document.createElement('img');
             createSelectImg.classList.add(imgClass, imgLazyClass);
-            createSelectImg.setAttribute('src', srcImgIndex);
+            createSelectImg.setAttribute('src', srcImg);
             createSelectLi.appendChild(createSelectImg);
          }
       }
    }
 
-   if (selectedIndex.getAttribute('data-srcImg')) {
-      let selectedImg = document.createElement('img');
-      selectedImg.setAttribute('src', `${selectedIndex.getAttribute('data-srcImg')}`);
-      createSelectBtn.appendChild(selectedImg);
-   }
-
    createSelectUl.addEventListener('click', e => {
       const target = e.target;
 
-      if ('LI' || createSelectLi.childNodes === target.tagName) {
-         if ('DIV' === target.tagName) {
+      if ('DIV' === target.tagName){}
+      else {
+         createSelectBtn.innerHTML = target.closest('li').innerHTML;
+         mainInitId.options.selectedIndex = +target.closest('li').getAttribute('data-index');
 
-         } else {
-            createSelectContainer.querySelector(`.${titleClass}`).innerHTML = target.closest('li').innerHTML;
-            mainInitId.options.selectedIndex = +target.closest('li').getAttribute('data-index');
-
-            for (let a = 0; a < options.length; a++) {
-               createSelectUl.querySelectorAll('li')[a].classList.remove(selectedClass);
-               target.closest('li').classList.add(selectedClass);
-            }
-
-            localStorage.setItem('selectedList', target.closest('li').getAttribute('data-index'));
-            localStorage.setItem('btn', target.closest('li').innerHTML);
-            localStorage.setItem('selected', options[mainInitId.selectedIndex].value);
+         for (let a = 0; a < options.length; a++) {
+            createSelectUl.querySelectorAll('li')[a].classList.remove(selectedClass);
+            target.closest('li').classList.add(selectedClass);
          }
+
+         localStorage.setItem('selectedList', target.closest('li').getAttribute('data-index'));
+         localStorage.setItem('btn', target.closest('li').innerHTML);
+         localStorage.setItem('selected', options[mainInitId.selectedIndex].value);
       }
+
    });
+
+   createSelectBtn.addEventListener('click', function () {
+      createSelectUl.classList.toggle(ulOpenClass);
+      createSelectBtn.classList.toggle(titleClassActive);
+   });
+
+   document.addEventListener('mouseup', function (e) {
+      let isClickInside = createSelectBtn.contains(e.target);
+      if (!isClickInside && !e.target.classList.contains(optGroupClass)) {
+         createSelectUl.classList.remove(ulOpenClass);
+         createSelectBtn.classList.remove(titleClassActive);
+      }
+   })
 
    if (localStorage.getItem('selectedList')) {
       for (let b = 0; b < options.length; b++) {
@@ -125,5 +124,5 @@ const CustomSelect = function (e) {
    createSelectContainer.appendChild(createSelectBtn);
    createSelectContainer.appendChild(createSelectUl);
    mainInitId.parentNode.insertBefore(createSelectContainer, mainInitId);
-   // mainInitId.style.display = 'none';
+   mainInitId.style.display = 'none';
 };
