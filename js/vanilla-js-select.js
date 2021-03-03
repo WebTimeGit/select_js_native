@@ -19,15 +19,15 @@ const CustomSelect = function (e) {
       titleClassActive = 'active',
       ulOpenClass = 'open';
 
-   if (localStorage.getItem('selected')) {
-      mainInitId.selectedIndex = localStorage.getItem('selected');
-   }
+   // if (localStorage.getItem('selected')) {
+   //    mainInitId.selectedIndex = localStorage.getItem('selected');
+   // }
 
    const createSelectContainer = document.createElement('div');
    createSelectContainer.className = selectContainerClass;
    if (mainInitId.id) createSelectContainer.id = `${prefixContainer}-${mainInitId.id}`;
 
-   let createSelectBtn = document.createElement('button');
+   let createSelectBtn = document.createElement('div');
    let btnSpan = document.createElement('span');
    createSelectBtn.appendChild(btnSpan);
    createSelectBtn.className = titleClass;
@@ -60,7 +60,7 @@ const CustomSelect = function (e) {
          liSpan.textContent = e[t].textContent;
 
          createSelectLi.setAttribute('data-value', e[t].value);
-         createSelectLi.setAttribute('data-index', `${dataIndexCount++}`);
+         createSelectLi.setAttribute('data-index', `option-${dataIndexCount++}`);
          createSelectUl.appendChild(createSelectLi);
 
          if (selectedIndex.textContent === e[t].textContent) {
@@ -91,9 +91,9 @@ const CustomSelect = function (e) {
             target.closest('li').classList.add(selectedClass);
          }
 
-         localStorage.setItem('selectedList', target.closest('li').getAttribute('data-index'));
-         localStorage.setItem('btn', target.closest('li').innerHTML);
-         localStorage.setItem('selected', options[mainInitId.selectedIndex].value);
+         // localStorage.setItem('selectedList', target.closest('li').getAttribute('data-index'));
+         // localStorage.setItem('btn', target.closest('li').innerHTML);
+         // localStorage.setItem('selected', options[mainInitId.selectedIndex].value);
       }
 
    });
@@ -111,16 +111,16 @@ const CustomSelect = function (e) {
       }
    })
 
-   if (localStorage.getItem('selectedList')) {
-      for (let b = 0; b < options.length; b++) {
-         createSelectUl.querySelectorAll('li')[b].classList.remove(selectedClass);
-      }
-      createSelectUl.querySelectorAll('li')[localStorage.getItem('selectedList')].classList.add(selectedClass);
-   }
+   // if (localStorage.getItem('selectedList')) {
+   //    for (let b = 0; b < options.length; b++) {
+   //       createSelectUl.querySelectorAll('li')[b].classList.remove(selectedClass);
+   //    }
+   //    createSelectUl.querySelectorAll('li')[localStorage.getItem('selectedList')].classList.add(selectedClass);
+   // }
 
-   if (localStorage.getItem('btn')) {
-      createSelectBtn.innerHTML = localStorage.getItem('btn');
-   }
+   // if (localStorage.getItem('btn')) {
+   //    createSelectBtn.innerHTML = localStorage.getItem('btn');
+   // }
    createSelectContainer.appendChild(createSelectBtn);
    createSelectContainer.appendChild(createSelectUl);
    mainInitId.parentNode.insertBefore(createSelectContainer, mainInitId);
